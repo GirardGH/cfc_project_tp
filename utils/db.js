@@ -31,16 +31,40 @@ export function connectDb() {
     });
 }
 
-export async function disconnectDb() {
-  if (connection.isConnected) {
-    if (process.env.NODE_ENV === "production") {
-      await mongoose.disconnect();
-      connection.isConnected = false;
+
+
+export function disconnectDb() {
+    if (connection.isConnected) {
+      if (process.env.NODE_ENV === "production") {
+        return mongoose.disconnect()
+          .then(() => {
+            connection.isConnected = false;
+            console.log("Disconnected from database");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        console.log("Not disconnected from database");
+        return Promise.resolve();
+      }
     } else {
-      console.log("Not disconnected from database");
+      console.log("There is no active connection to disconnect");
+      return Promise.resolve();
     }
   }
-}
+
+
+// export async function disconnectDb() {
+//   if (connection.isConnected) {
+//     if (process.env.NODE_ENV === "production") {
+//       await mongoose.disconnect();
+//       connection.isConnected = false;
+//     } else {
+//       console.log("Not disconnected from database");
+//     }
+//   }
+// }
 
 
 
