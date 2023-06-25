@@ -3,6 +3,7 @@ import MagnifyingGlassIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon
 import ShoppingBagIcon from "@heroicons/react/24/outline/ShoppingBagIcon";
 import UserIcon from "@heroicons/react/24/outline/UserIcon";
 import Link from "next/link";
+import UserMenu from './UserMenu';
 
 export default function Top() {
   return (
@@ -46,6 +47,7 @@ export default function Top() {
         <p className="text-white text-sm">LE MAGASIN</p>
       </div>
     </div>
+    <UserMenu className=""/>
   </div>
   )
 }

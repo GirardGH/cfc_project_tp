@@ -1,5 +1,5 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { MailIcon, PhoneIcon } from '@heroicons/react/24/solid'
+import { PhoneIcon } from '@heroicons/react/24/solid'
+import { AiOutlineMail } from 'react-icons/ai'
 
 const people = [
   {
@@ -16,50 +16,50 @@ const people = [
 
 export default function UserMenu() {
   return (
-    <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {people.map((person) => (
-        <li
-          key={person.email}
-          className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
-        >
-          <div className="flex-1 flex flex-col p-8">
-            <img className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={person.imageUrl} alt="" />
-            <h3 className="mt-6 text-gray-900 text-sm font-medium">{person.name}</h3>
-            <dl className="mt-1 flex-grow flex flex-col justify-between">
-              <dt className="sr-only">Title</dt>
-              <dd className="text-gray-500 text-sm">{person.title}</dd>
-              <dt className="sr-only">Role</dt>
-              <dd className="mt-3">
-                <span className="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-                  {person.role}
-                </span>
-              </dd>
-            </dl>
-          </div>
-          <div>
-            <div className="-mt-px flex divide-x divide-gray-200">
-              <div className="w-0 flex-1 flex">
-                <a
-                  href={`mailto:${person.email}`}
-                  className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
-                >
-                  {/* <MailIcon className="w-5 h-5 text-gray-400" aria-hidden="true" /> */}
-                  <span className="ml-3">Email</span>
-                </a>
-              </div>
-              <div className="-ml-px w-0 flex-1 flex">
-                <a
-                  href={`tel:${person.telephone}`}
-                  className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
-                >
-                  <PhoneIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
-                  <span className="ml-3">Call</span>
-                </a>
-              </div>
+    <div className='flex justify-end'>
+    <div className="grid grid-cols-1">
+      <div
+        key={people.email}
+        className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
+      >
+        <div className="flex-1 flex flex-col p-8">
+          <img className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={people[0].imageUrl} alt="" />
+          <h3 className="mt-6 text-gray-900 text-sm font-medium">{people[0].name}</h3>
+          <dl className="mt-1 flex-grow flex flex-col justify-between">
+            <dt className="sr-only">Title</dt>
+            <dd className="text-gray-500 text-sm">{people[0].title}</dd>
+            <dt className="sr-only">Role</dt>
+            <dd className="mt-3">
+              <span className="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
+                {people[0].role}
+              </span>
+            </dd>
+          </dl>
+        </div>
+        <div>
+          <div className="-mt-px flex divide-x divide-gray-200">
+            <div className="w-0 flex-1 flex">
+              <a
+                href={`mailto:${people[0].email}`}
+                className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+              >
+                <AiOutlineMail className="w-5 h-5 text-gray-400" aria-hidden="true" />
+                <span className="ml-3">Email</span>
+              </a>
+            </div>
+            <div className="-ml-px w-0 flex-1 flex">
+              <a
+                href={`tel:${people[0].telephone}`}
+                className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
+              >
+                <PhoneIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
+                <span className="ml-3">Call</span>
+              </a>
             </div>
           </div>
-        </li>
-      ))}
-    </ul>
+        </div>
+      </div>
+    </div>
+    </div>
   )
 }
