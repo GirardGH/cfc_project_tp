@@ -1,18 +1,27 @@
+import '../src/app/globals.css'
 import { Provider } from "react-redux";
 import store from "../store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import Layout from "../src/app/layout";
+import Head from "next/head";
+
 
 let persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
-      </PersistGate>
-    </Provider>
+    <>
+      <Head>
+        <title>CFC</title>
+        <meta name="description" content="Produits exotiques" />
+        <link rel="icon" href="/cfc.svg" />
+      </Head>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} />
+        </PersistGate>
+      </Provider>
+    </>
   );
 }
 
