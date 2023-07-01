@@ -22,7 +22,7 @@ export default function Top() {
           />
         </Link>
       </div>
-      <div className="flex px-4 laptop:px-8 laptop:ml-auto">
+      <div className="flex px-4 laptop:px-8 laptop:ml-auto relative">
         <div className="w-fit h-fit px-1 laptop:hidden">
           <MagnifyingGlassIcon className="w-8 h-8" />
         </div>
