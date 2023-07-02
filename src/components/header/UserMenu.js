@@ -1,4 +1,5 @@
 import { PhoneIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { AiOutlineMail } from "react-icons/ai";
 
 const people = [
@@ -14,70 +15,52 @@ const people = [
   // More people...
 ];
 
-export default function UserMenu() {
-  return (
-    <div className="flex justify-end absolute top-24 right-4">
-      <div className="grid grid-cols-1">
-        <div
-          key={people.email}
-          className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
-        >
-          <div className="flex-1 flex flex-col p-8">
-            <img
-              className="w-32 h-32 flex-shrink-0 mx-auto rounded-full"
-              src={people[0].imageUrl}
-              alt=""
-            />
-            <h3 className="mt-6 text-gray-900 text-sm font-medium">
-              {people[0].name}
-            </h3>
-            <dl className="mt-1 flex-grow flex flex-col justify-between">
-              <dt className="sr-only">Title</dt>
-              <dd className="text-gray-500 text-sm">{people[0].title}</dd>
-              <dt className="sr-only">Role</dt>
-              <dd className="mt-3">
-                <span className="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-                  {people[0].role}
-                </span>
-              </dd>
-            </dl>
-          </div>
-          <div>
-            <div className="-mt-px flex divide-x divide-gray-200">
-              <div className="w-0 flex-1 flex">
+export default function UserMenu({ loggedIn }) {
 
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >ihkjhkhjkhk
-                  {/* <a
-                    href={`mailto:${people[0].email}`}
-                    className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
-                  >
-                    <AiOutlineMail
-                      className="w-5 h-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-3">Email</span>
-                  </a> */}
-                </button>
-              </div>
-              <div className="-ml-px w-0 flex-1 flex">
-                <a
-                  href={`tel:${people[0].telephone}`}
-                  className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
-                >
-                  <PhoneIcon
-                    className="w-5 h-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <span className="ml-3">Call</span>
-                </a>
-              </div>
-            </div>
-          </div>
+  return (
+    <div className=" w-[280px] absolute top-12 right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 ">
+      <h4 className="text-center font-semibold">Welcome To CFC !</h4>
+      {loggedIn ? (
+        <div className="flex justify-center gap-4">
+        <img src="https://www.pngarts.com/files/3/Avatar-PNG-Picture.png"
+            alt="avatar"
+            className="h-24 w-24"
+              />
+          <div className="flex flex-col justify-center">
+            <span className="text-sm">Welcome Back,</span>
+            <h3 className="font-semibold">GIRARD</h3>
+           <span className=" text-blue-600 underline text-sm cursor-pointer">Sign out</span>
+          </div>     
         </div>
-      </div>
+        
+        ) : (
+          <div className="!flex !gap-2 py-0 px-4">
+            <button className="flex items-center justify-center p-1 bg-[#770c14] font-normal text-stone-50 cursor-pointer w-3/4 rounded-sm">Register</button>
+            <button className="flex items-center justify-center p-1 bg-black text-stone-50 font-normal cursor-pointer w-1/4 rounded-sm">Login</button>
+          </div>
+
+
+        )}
+        <ul className="">
+          <li className="h-7 hover:bg-black hover:text-white px-4 w-full cursor-pointer">
+            <Link href="/profile">Account</Link>
+          </li>
+          <li className="h-7 hover:bg-black hover:text-white px-4 w-full cursor-pointer">
+            <Link href="/profile/orders">My orders</Link>
+          </li>
+          <li className="h-7 hover:bg-black hover:text-white px-4 w-full cursor-pointer">
+            <Link href="/profile/message">Message Center</Link>
+          </li>
+          <li className="h-7 hover:bg-black hover:text-white px-4 w-full cursor-pointer">
+            <Link href="/profile/address">Address</Link>
+          </li>
+          <li className="h-7 hover:bg-black hover:text-white px-4 w-full cursor-pointer">
+            <Link href="/profile/whishlist">Whishlist</Link>
+          </li>
+
+
+        </ul>
     </div>
-  );
+  )
+
 }

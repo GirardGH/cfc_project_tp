@@ -15,7 +15,7 @@ export default function Top() {
       </div>
       <div className="py-2 px-4 mr-auto laptop:mr-0">
         <Link href="/">
-          <img
+          <image
             src="https://res.cloudinary.com/db2sa2bxv/image/upload/v1676456828/logoCFC_yswlhx.svg"
             alt="logo"
             className="w-24 h-24 mx-2 my-2"
