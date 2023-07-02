@@ -560,7 +560,7 @@ export default function Draft() {
                     </a>
                   </div>
                 )}
-                {visible && <UserMenu loggedIn={loggedIn} />}
+                {visible && <UserMenu loggedIn={loggedIn} setVisible={setVisible} />}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">

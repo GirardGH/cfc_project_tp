@@ -15,10 +15,12 @@ const people = [
   // More people...
 ];
 
-export default function UserMenu({ loggedIn }) {
+export default function UserMenu({ loggedIn, setVisible }) {
 
   return (
-    <div className=" w-[280px] absolute top-12 right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 ">
+    <div className=" w-[280px] absolute top-12 right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 "
+    onMouseOver={() => setVisible(true)}
+    onMouseLeave={() => setVisible(false)}>
       <h4 className="text-center font-semibold">Welcome To CFC !</h4>
       {loggedIn ? (
         <div className="flex justify-center gap-4">
