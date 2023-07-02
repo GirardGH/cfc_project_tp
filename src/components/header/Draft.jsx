@@ -16,11 +16,17 @@
 */
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import Image from "next/image";
 // import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
-import { AiFillAccountBook } from "react-icons/ai";
+import {
+  AiFillAccountBook,
+  AiOutlineClose,
+  AiOutlineMenu,
+} from "react-icons/ai";
 import { PiUser } from "react-icons/pi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMagnifyingGlass } from "react-icons/pi";
+import UserMenu from "./UserMenu";
 
 const navigation = {
   categories: [
@@ -159,6 +165,7 @@ function classNames(...classes) {
 export default function Draft() {
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   return (
     <div className="bg-white">
@@ -198,7 +205,7 @@ export default function Draft() {
                   onClick={() => setOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
-                  <AiFillAccountBook className="h-6 w-6" aria-hidden="true" />
+                  <AiOutlineClose className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 
@@ -236,7 +243,9 @@ export default function Draft() {
                             className="group relative text-sm"
                           >
                             <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
-                              <img
+                              <Image
+                                width={500}
+                                height={500}
                                 src={item.imageSrc}
                                 alt={item.imageAlt}
                                 className="object-center object-cover"
@@ -323,7 +332,9 @@ export default function Draft() {
 
               <div className="border-t border-gray-200 py-6 px-4">
                 <a href="#" className="-m-2 p-2 flex items-center">
-                  <img
+                  <Image
+                    width={500}
+                    height={500}
                     src="https://tailwindui.com/img/flags/flag-canada.svg"
                     alt=""
                     className="w-5 h-auto block flex-shrink-0"
@@ -352,14 +363,16 @@ export default function Draft() {
                 onClick={() => setOpen(true)}
               >
                 <span className="sr-only">Open menu</span>
-                <AiFillAccountBook className="h-6 w-6" aria-hidden="true" />
+                <AiOutlineMenu className="h-6 w-6" aria-hidden="true" />
               </button>
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
                 <a href="#">
                   <span className="sr-only">Workflow</span>
-                  <img
+                  <Image
+                    width={500}
+                    height={500}
                     className="h-14 w-auto"
                     src="https://res.cloudinary.com/db2sa2bxv/image/upload/v1676456828/logoCFC_yswlhx.svg"
                     alt=""
@@ -413,7 +426,9 @@ export default function Draft() {
                                           className="group relative text-base sm:text-sm"
                                         >
                                           <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                            <img
+                                            <Image
+                                              width={500}
+                                              height={500}
                                               src={item.imageSrc}
                                               alt={item.imageAlt}
                                               className="object-center object-cover"
@@ -509,12 +524,18 @@ export default function Draft() {
                 </div>
 
                 {loggedIn ? (
-                  <div className="hidden lg:ml-8 lg:flex">
+                  <div
+                    className="hidden lg:ml-8 lg:flex"
+                    onMouseOver={() => setVisible(true)}
+                    onMouseLeave={() => setVisible(false)}
+                  >
                     <a
                       href="#"
                       className="text-gray-700 hover:text-gray-800 flex items-center"
                     >
-                      <img
+                      <Image
+                        width={500}
+                        height={500}
                         src="https://www.pngarts.com/files/3/Avatar-PNG-Picture.png"
                         alt=""
                         className="w-8 h-8 block flex-shrink-0 rounded-full"
@@ -531,9 +552,7 @@ export default function Draft() {
                       href="#"
                       className="text-gray-700 hover:text-gray-800 flex items-center"
                     >
-                      <PiUser
-                        className="w-8 h-8 block flex-shrink-0"
-                      />
+                      <PiUser className="w-8 h-8 block flex-shrink-0" />
                       <span className="ml-2 block text-sm font-medium">
                         Profil
                       </span>
@@ -541,6 +560,7 @@ export default function Draft() {
                     </a>
                   </div>
                 )}
+                {visible && <UserMenu loggedIn={loggedIn} />}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
