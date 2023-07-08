@@ -162,13 +162,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Draft() {
+export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [visible, setVisible] = useState(false);
 
+
   return (
-    <div className="bg-white">
+    <div className="bg-white relative">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -564,7 +565,7 @@ export default function Draft() {
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-black hover:text-[#770c14]">
                     <span className="sr-only">Search</span>
-                    <PiMagnifyingGlass className="w-8 h-8" aria-hidden="true" />
+                    <PiMagnifyingGlass className="w-8 h-8" aria-hidden="true" onClick={handleSearchItem}/>
                   </a>
                 </div>
 

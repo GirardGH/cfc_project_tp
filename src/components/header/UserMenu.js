@@ -21,7 +21,7 @@ export default function UserMenu({ loggedIn, setVisible }) {
     <div className=" w-[280px] lg:absolute lg:top-12 lg:right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 hidden lg:block "
     onMouseOver={() => setVisible(true)}
     onMouseLeave={() => setVisible(false)}>
-      <h4 className="text-center font-semibold">Welcome To CFC !</h4>
+      <h4 className="text-center font-semibold mb-6">Welcome To CFC !</h4>
       {loggedIn ? (
         <div className="flex justify-center gap-4 mt-2">
         <img src="https://www.pngarts.com/files/3/Avatar-PNG-Picture.png"
