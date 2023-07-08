@@ -32,7 +32,7 @@ const navigation = {
   categories: [
     {
       id: "women",
-      name: "Women",
+      name: "EPICERIE SALEÉ",
       featured: [
         {
           name: "New Arrivals",
@@ -94,7 +94,7 @@ const navigation = {
     },
     {
       id: "men",
-      name: "Men",
+      name: "EPICERIE SUCRÉE",
       featured: [
         {
           name: "New Arrivals",
@@ -153,8 +153,8 @@ const navigation = {
     },
   ],
   pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
+    { name: "BOUTIQUE", href: "#" },
+    { name: "S'INSPIRER", href: "#" },
   ],
 };
 
@@ -164,7 +164,7 @@ function classNames(...classes) {
 
 export default function Draft() {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [visible, setVisible] = useState(false);
 
   return (
@@ -201,7 +201,7 @@ export default function Draft() {
               <div className="px-4 pt-5 pb-2 flex">
                 <button
                   type="button"
-                  className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
+                  className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-black"
                   onClick={() => setOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
@@ -211,7 +211,7 @@ export default function Draft() {
 
               {/* Links */}
               <Tab.Group as="div" className="mt-2">
-                <div className="border-b border-gray-200">
+                <div className="border-b border-gray-200 overflow-x-scroll overflow-y-hidden">
                   <Tab.List className="-mb-px flex px-4 space-x-8">
                     {navigation.categories.map((category) => (
                       <Tab
@@ -219,7 +219,7 @@ export default function Draft() {
                         className={({ selected }) =>
                           classNames(
                             selected
-                              ? "text-indigo-600 border-indigo-600"
+                              ? "text-[#770c14] border-[#770c14]"
                               : "text-gray-900 border-transparent",
                             "flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium"
                           )
@@ -303,14 +303,14 @@ export default function Draft() {
                   <div key={page.name} className="flow-root">
                     <a
                       href={page.href}
-                      className="-m-2 p-2 block font-medium text-gray-900"
+                      className="-m-2 p-2 block font-semibold text-gray-900"
                     >
                       {page.name}
                     </a>
                   </div>
                 ))}
               </div>
-
+{/* 
               <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                 <div className="flow-root">
                   <a
@@ -328,9 +328,9 @@ export default function Draft() {
                     Create account
                   </a>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="border-t border-gray-200 py-6 px-4">
+              {/* <div className="border-t border-gray-200 py-6 px-4">
                 <a href="#" className="-m-2 p-2 flex items-center">
                   <Image
                     width={500}
@@ -344,7 +344,7 @@ export default function Draft() {
                   </span>
                   <span className="sr-only">, change currency</span>
                 </a>
-              </div>
+              </div> */}
             </div>
           </Transition.Child>
         </Dialog>
@@ -391,8 +391,8 @@ export default function Draft() {
                             <Popover.Button
                               className={classNames(
                                 open
-                                  ? "border-indigo-600 text-indigo-600"
-                                  : "border-transparent text-gray-700 hover:text-gray-800",
+                                  ? "border-[#770c14] text-[#770c14] "
+                                  : "border-transparent text-black hover:text-[#770c14] font-semibold  ",
                                 "relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px"
                               )}
                             >
@@ -498,7 +498,7 @@ export default function Draft() {
                     <a
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      className="flex items-center text-sm font-semibold text-black hover:text-yellow-300"
                     >
                       {page.name}
                     </a>
@@ -507,7 +507,7 @@ export default function Draft() {
               </Popover.Group>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                {/* <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   <a
                     href="#"
                     className="text-sm font-medium text-gray-700 hover:text-gray-800"
@@ -521,11 +521,13 @@ export default function Draft() {
                   >
                     Create account
                   </a>
-                </div>
+                </div> */}
+
+                {/* User */}
 
                 {loggedIn ? (
                   <div
-                    className="hidden lg:ml-8 lg:flex"
+                    className="lg:ml-8 lg:flex"
                     onMouseOver={() => setVisible(true)}
                     onMouseLeave={() => setVisible(false)}
                   >
@@ -540,46 +542,40 @@ export default function Draft() {
                         alt=""
                         className="w-8 h-8 block flex-shrink-0 rounded-full"
                       />
-                      <span className="ml-3 block text-sm font-medium">
+                      {/* <span className="ml-3 block text-sm font-medium">
                         GIRARD
-                      </span>
+                      </span> */}
                       <span className="sr-only">, change currency</span>
                     </a>
                   </div>
                 ) : (
-                  <div className="hidden lg:ml-8 lg:flex">
+                  <div className="flex lg:ml-6">
                     <a
                       href="#"
-                      className="text-gray-700 hover:text-gray-800 flex items-center"
+                      className="text-black hover:text-[#770c14] flex items-center"
                     >
-                      <PiUser className="w-8 h-8 block flex-shrink-0" />
-                      <span className="ml-2 block text-sm font-medium">
-                        Profil
-                      </span>
-                      <span className="sr-only">, change currency</span>
+                      <PiUser className="w-8 h-8 block" />
                     </a>
                   </div>
                 )}
-                {visible && <UserMenu loggedIn={loggedIn} setVisible={setVisible} />}
+                {visible && <UserMenu loggedIn={loggedIn} setVisible={setVisible}/>}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
+                  <a href="#" className="p-2 text-black hover:text-[#770c14]">
                     <span className="sr-only">Search</span>
                     <PiMagnifyingGlass className="w-8 h-8" aria-hidden="true" />
                   </a>
                 </div>
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
+                <div className="flow-root lg:ml-6">
                   <a href="#" className="group -m-2 p-2 flex items-center">
                     <HiOutlineShoppingBag
-                      className="flex-shrink-0 h-8 w-8 text-gray-400 group-hover:text-gray-500"
+                      className="flex-shrink-0 h-8 w-8 text-black group-hover:text-[#770c14]"
                       aria-hidden="true"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
+
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>
