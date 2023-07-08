@@ -18,20 +18,22 @@ const people = [
 export default function UserMenu({ loggedIn, setVisible }) {
 
   return (
-    <div className=" w-[280px] absolute top-12 right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 "
+    <div className=" w-[280px] lg:absolute lg:top-12 lg:right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 hidden lg:block "
     onMouseOver={() => setVisible(true)}
     onMouseLeave={() => setVisible(false)}>
       <h4 className="text-center font-semibold">Welcome To CFC !</h4>
       {loggedIn ? (
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 mt-2">
         <img src="https://www.pngarts.com/files/3/Avatar-PNG-Picture.png"
             alt="avatar"
             className="h-24 w-24"
               />
           <div className="flex flex-col justify-center">
-            <span className="text-sm">Welcome Back,</span>
-            <h3 className="font-semibold">GIRARD</h3>
-           <span className=" text-blue-600 underline text-sm cursor-pointer">Sign out</span>
+            <span className="text-sm mt-1">Welcome Back,</span>
+            <div className="overflow-x-hidden w-28 mt-2">
+            <h3 className="font-semibold">GIRARD Ghislain</h3>
+            </div>
+           <span className=" text-blue-600 underline text-sm cursor-pointer mt-1">Sign out</span>
           </div>     
         </div>
         
