@@ -18,7 +18,7 @@ const people = [
 export default function UserMenu({ loggedIn, setVisible }) {
 
   return (
-    <div className=" w-[280px] lg:absolute lg:top-12 lg:right-60 shadow-md bg-white z-50 flex flex-col gap-4 py-4 px-0 hidden lg:block "
+    <div className=" w-[280px] lg:absolute lg:top-[4.5rem] lg:right-[19rem] shadow-md bg-white z-50 lg:flex flex-col gap-4 py-4 px-0 hidden "
     onMouseOver={() => setVisible(true)}
     onMouseLeave={() => setVisible(false)}>
       <h4 className="text-center font-semibold mb-6">Welcome To CFC !</h4>

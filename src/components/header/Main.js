@@ -1,7 +1,7 @@
 import React from 'react'
 import SearchBar from './SearchBar'
 
-export default function Main({ searchItem }) {
+export default function Main({ searchItem, handleSearchItem }) {
 
     const produits = [
         { id: 1, nom: "Produit 1" },
@@ -28,7 +28,7 @@ export default function Main({ searchItem }) {
   return (
     <div>
     {searchItem &&
-        <SearchBar produits={produits}  />}
+        <SearchBar produits={produits} handleSearchItem={handleSearchItem} />}
     </div>
   )
 }

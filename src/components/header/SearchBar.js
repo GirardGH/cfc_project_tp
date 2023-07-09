@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { GoArrowRight } from "react-icons/go"
+import { PiMagnifyingGlass } from "react-icons/pi";
+import { AiOutlineClose } from "react-icons/ai";
 
-export default function SearchBar({ produits }) {
+
+export default function SearchBar({ produits, handleSearchItem }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
 
@@ -21,29 +25,33 @@ export default function SearchBar({ produits }) {
   return (
     <div className="bg-[#770c14] bg-opacity-95 p-6 w-full min-h-fit max-h-full z-20 absolute">
       <form>
-        <fieldset>
+        <fieldset className="">
           <div className={`placeholder ${
                 isPlaceholderVisible ? "" : "border-b-2 pb-6"
               } flex`}>
-            {/* <label> */}
             <span
               className={`placeholder ${
                 isPlaceholderVisible ? "" : "hidden"
-              } text-white block absolute left-8`}
+              } text-white block absolute break-words`}
             >
               Rechercher un produit, un cadeau...
             </span>
+            
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchEdit}
-              className="input-text bg-transparent bg-opacity-95 text-white focus:outline-none w-full"
+              className="input-text bg-transparent bg-opacity-95 text-white focus:outline-none w-full z-10"
               autoFocus
             />
-            {/* </label> */}
+            <div className="flex flex-row-reverse text-white">
+              <AiOutlineClose className="w-6 h-6 ml-3 my-1 cursor-pointer"
+                onClick={handleSearchItem}
+              />
             <button onClick={handleSearchClick} className="search-button text-white">
-              Search
+              <PiMagnifyingGlass className="w-12 h-10"/>
             </button>
+            </div>
           </div>
         </fieldset>
       </form>
@@ -60,8 +68,9 @@ export default function SearchBar({ produits }) {
       </div>
       <div className={`placeholder ${
                 isPlaceholderVisible ? "hidden" : ""
-              } text-white border-t-2 pt-4 bg-transparent w-full flex justify-center items-center`}>
-          <h3>voir toute notre sélection</h3>
+              } text-white border-t-2 pt-4 bg-transparent w-full flex justify-center items-center font-semibold`}>
+          <h3 className="cursor-pointer">VOIR NOTRE SELECTION</h3>
+          <GoArrowRight className="h-6 w-6 mx-2 font-semibold cursor-pointer"/>
         </div>
     </div>
   );
