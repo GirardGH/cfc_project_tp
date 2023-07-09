@@ -162,7 +162,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
+export default function Draft({ handleSearchItem }) {
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -357,7 +357,7 @@ export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         >
           <div className="border-b border-gray-200">
-            <div className="h-16 flex items-center">
+            <div className="h-16 lg:py-14 flex items-center">
               <button
                 type="button"
                 className="bg-white p-2 rounded-md text-gray-400 lg:hidden"
@@ -374,7 +374,7 @@ export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
                   <Image
                     width={500}
                     height={500}
-                    className="h-14 w-auto"
+                    className="h-14 lg:h-20 w-auto"
                     src="https://res.cloudinary.com/db2sa2bxv/image/upload/v1676456828/logoCFC_yswlhx.svg"
                     alt=""
                   />
@@ -382,7 +382,7 @@ export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
               </div>
 
               {/* Flyout menus */}
-              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
+              <Popover.Group className="hidden lg:ml-14 lg:block lg:self-stretch">
                 <div className="h-full flex space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
@@ -392,8 +392,8 @@ export default function Draft({ handleSearchItem, searchItem, setSearchItem }) {
                             <Popover.Button
                               className={classNames(
                                 open
-                                  ? "border-[#770c14] text-[#770c14] "
-                                  : "border-transparent text-black hover:text-[#770c14] font-semibold  ",
+                                  ? "border-[#770c14] text-[#770c14]"
+                                  : "border-transparent hover:text-[#770c14] text-base",
                                 "relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px"
                               )}
                             >
