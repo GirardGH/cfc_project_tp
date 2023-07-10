@@ -164,9 +164,8 @@ function classNames(...classes) {
 
 export default function Draft({ handleSearchItem }) {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [visible, setVisible] = useState(false);
-
 
   return (
     <div className="bg-white relative">
@@ -311,7 +310,7 @@ export default function Draft({ handleSearchItem }) {
                   </div>
                 ))}
               </div>
-{/* 
+              {/* 
               <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                 <div className="flow-root">
                   <a
@@ -528,7 +527,7 @@ export default function Draft({ handleSearchItem }) {
 
                 {loggedIn ? (
                   <div
-                    className="lg:ml-8 lg:flex"
+                    className="lg:ml-8 lg:flex lg:relative"
                     onMouseOver={() => setVisible(true)}
                     onMouseLeave={() => setVisible(false)}
                   >
@@ -550,7 +549,11 @@ export default function Draft({ handleSearchItem }) {
                     </a>
                   </div>
                 ) : (
-                  <div className="flex lg:ml-6">
+                  <div
+                    className="flex lg:ml-6"
+                    onMouseOver={() => setVisible(true)}
+                    onMouseLeave={() => setVisible(false)}
+                  >
                     <a
                       href="#"
                       className="text-black hover:text-[#770c14] flex items-center"
@@ -559,13 +562,19 @@ export default function Draft({ handleSearchItem }) {
                     </a>
                   </div>
                 )}
-                {visible && <UserMenu loggedIn={loggedIn} setVisible={setVisible}/>}
+                {visible && (
+                  <UserMenu loggedIn={loggedIn} setVisible={setVisible} />
+                )}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-black hover:text-[#770c14]">
                     <span className="sr-only">Search</span>
-                    <PiMagnifyingGlass className="w-8 h-8" aria-hidden="true" onClick={handleSearchItem}/>
+                    <PiMagnifyingGlass
+                      className="w-8 h-8"
+                      aria-hidden="true"
+                      onClick={handleSearchItem}
+                    />
                   </a>
                 </div>
 
