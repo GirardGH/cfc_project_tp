@@ -27,6 +27,7 @@ import { PiUser } from "react-icons/pi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMagnifyingGlass } from "react-icons/pi";
 import UserMenu from "./UserMenu";
+import { useSession } from "next-auth/react";
 
 const navigation = {
   categories: [
@@ -164,7 +165,7 @@ function classNames(...classes) {
 
 export default function Draft({ handleSearchItem }) {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { data: session } = useSession();
   const [visible, setVisible] = useState(false);
 
   return (
@@ -525,7 +526,7 @@ export default function Draft({ handleSearchItem }) {
 
                 {/* User */}
 
-                {loggedIn ? (
+                {session ? (
                   <div
                     className="lg:ml-8 lg:flex lg:relative"
                     onMouseOver={() => setVisible(true)}
@@ -535,11 +536,9 @@ export default function Draft({ handleSearchItem }) {
                       href="#"
                       className="text-gray-700 hover:text-gray-800 flex items-center"
                     >
-                      <Image
-                        width={500}
-                        height={500}
-                        src="https://www.pngarts.com/files/3/Avatar-PNG-Picture.png"
-                        alt=""
+                      <img
+                        src={session.user.image}
+                        alt="avatar"
                         className="w-8 h-8 block flex-shrink-0 rounded-full"
                       />
                       {/* <span className="ml-3 block text-sm font-medium">
@@ -563,7 +562,7 @@ export default function Draft({ handleSearchItem }) {
                   </div>
                 )}
                 {visible && (
-                  <UserMenu loggedIn={loggedIn} setVisible={setVisible} />
+                  <UserMenu session={session} setVisible={setVisible} />
                 )}
 
                 {/* Search */}
