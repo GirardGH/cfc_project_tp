@@ -54,6 +54,50 @@
     font-size: x-small;
   }
 
+  &__buttonco {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 9999px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
+    transition: background-color 0.3s ease;
+    background-color: #770c14;
+    color: #ffffff;
+    font-weight: 600;
+    &:hover {
+      background-color: #fde047;
+      color: black;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+    }
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+
+  &__buttonsocial {
+    display: flex;
+    align-items: center;
+    width: 17rem;
+    padding: 0.5rem;
+    border : 1px solid #c2c8d0;
+    color: #2d333a;
+    border-radius: 20px;
+    &:hover {
+      background-color: #fde047;
+    }
+  }
+
+
   &__form {
     margin-top: 1rem;
     h1 {
@@ -67,38 +111,6 @@
 
     form {
       margin-top: 2rem;
-    }
-
-    button {
-      width: fit-content;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 16px;
-      border: none;
-      border-radius: 9999px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
-      transition: background-color 0.3s ease;
-      background-color: #770c14;
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    button:hover {
-      background-color: #fde047;
-      color: black;
-    }
-
-    button:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-    }
-
-    button:focus:not(:focus-visible) {
-      box-shadow: none;
     }
 
     .forgot {

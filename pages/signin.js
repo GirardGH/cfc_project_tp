@@ -6,7 +6,7 @@ import styles from "../styles/signin.module.scss";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { getProviders } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 
 // const initalValues = {
 //   login_email: "",
@@ -39,7 +39,10 @@ export default function signin({ providers }) {
           </div>
           <div className={`${styles.login__form}`}>
             <h1>J&#39;ai déjà un compte</h1>
-            <p className=" text-[#9b9796]">Si vous êtes un utilisateur enregistré, veuillez saisir votre adresse e-mail et votre mot de passe.</p>
+            <p className=" text-[#9b9796]">
+              Si vous êtes un utilisateur enregistré, veuillez saisir votre
+              adresse e-mail et votre mot de passe.
+            </p>
 
             <Formik
               initialValues={{ email: "", password: "" }}
@@ -72,7 +75,11 @@ export default function signin({ providers }) {
                     placeholder="Adresse e-mail"
                     className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
                   />
-                  <ErrorMessage name="email" component="span" className={`${styles.login__required}`}/>
+                  <ErrorMessage
+                    name="email"
+                    component="span"
+                    className={`${styles.login__required}`}
+                  />
 
                   <Field
                     name="password"
@@ -81,28 +88,57 @@ export default function signin({ providers }) {
                     className={`${styles.login__inputtwo} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-baseline font-normal text-lg line-h leading-4`}
                   />
                   <div className="flex justify-between">
-                  <div className={`${styles.forgot}`}>
-                    <Link href="/forget" >Mot de passe oublié ?</Link>
+                    <div className={`${styles.forgot}`}>
+                      <Link href="/forget">Mot de passe oublié ?</Link>
+                    </div>
+                    <ErrorMessage
+                      name="password"
+                      component="span"
+                      className={`${styles.login__required}`}
+                    />
                   </div>
-                  <ErrorMessage name="password" component="span" className={`${styles.login__required}`} />
-                  </div>
-                  <button type="submit" disabled={isSubmitting}>
-                  
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`${styles.login__buttonco}`}
+                  >
                     ME CONNECTER
                   </button>
                 </Form>
               )}
             </Formik>
-            <div>
-              <span>
-                or continue with
-              </span>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center">
+                {providers.map((elt) => (
+                  <div key={elt.name} className="mt-4">
+                    <button
+                      className={`${styles.login__buttonsocial}`}
+                      onClick={() => signIn(elt.id)}
+                    >
+                      <img
+                        src={`../../icons/${elt.name}.png`}
+                        alt={elt.name}
+                        className="w-6 h-6 mx-2"
+                      />
+                      <span className="text-gray-800 border-y-8">
+                        Continue with {elt.name}
+                      </span>
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-
-            {providers.map((elt) => (<h1 key={elt.index}>{elt.name}</h1>))}
           </div>
         </div>
-      </div>
 
       <Footer />
     </div>
