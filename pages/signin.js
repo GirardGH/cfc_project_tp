@@ -1,96 +1,131 @@
-import React, { useState } from "react";
-import Link from "next/link";
 import Header from "../src/components/header";
 import Footer from "../src/components/footer";
 import styles from "../styles/signin.module.scss";
 import { BiLeftArrowAlt } from "react-icons/bi";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import Link from "next/link";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { getProviders, signIn } from "next-auth/react";
-
-const initalValues = {
+import LoginInput from "../src/components/inputs/loginInput";
+import { useState } from "react";
+import CircledIconBtn from "../src/components/buttons/circledIconBtn";
+import {
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signIn,
+  country,
+} from "next-auth/react";
+import axios from "axios";
+import Router from "next/router";
+const initialvalues = {
+  login_email: "",
+  login_password: "",
+  name: "",
   email: "",
   password: "",
-  newEmail: "",
-  newPassword: "",
-  confirmPassword: "",
-  firstname: "",
-  lastname: "",
-  phone: "",
-  address: "",
-  zipCode: "",
-  city: "",
+  conf_password: "",
+  success: "",
+  error: "",
+  login_error: "",
 };
-
-export default function signin({ providers }) {
-  console.log(providers);
-  const [user, setUser] = useState(initalValues);
-  const { email, password, newEmail, newPassword, confirmPassword, firstname, lastname, phone, address, zipCode, city } = user;
-
-
-  const handleSetChange = (e) => {
+export default function signin({ providers, callbackUrl, csrfToken }) {
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(initialvalues);
+  const {
+    login_email,
+    login_password,
+    name,
+    email,
+    password,
+    conf_password,
+    success,
+    error,
+    login_error,
+  } = user;
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({...user, [name]: value});
+    setUser({ ...user, [name]: value });
   };
 
-  console.log(user)
-
   const loginValidation = Yup.object({
+    login_email: Yup.string()
+      .required("Email address is required.")
+      .email("Please enter a valid email address."),
+    login_password: Yup.string().required("Please enter a password"),
+  });
+  const registerValidation = Yup.object({
+    name: Yup.string()
+      .required("What's your name ?")
+      .min(2, "First name must be between 2 and 16 characters.")
+      .max(16, "First name must be between 2 and 16 characters.")
+      .matches(/^[aA-zZ]/, "Numbers and special characters are not allowed."),
     email: Yup.string()
-      .required("Email adress is required")
-      .email("please enter a valid email"),
-    password: Yup.string().required("Please enter a password"),
-  });
-
-  const createValidation = Yup.object({
-    newEmail: Yup.string()
-      .required("Email address is required")
-      .email("Entrez une adresse email valide"),
-    newPassword: Yup.string()
       .required(
-        `Entrez un mot de passe de 6 caractères minimum avec une Majuscule et un caractère ! " # $ % & ' ( ) * +`
+        "You'll need this when you log in and if you ever need to reset your password."
       )
-      .min(6, "mot de passe de 6 caractères minimum")
-      .max(36, "mot de passe de 36 caractères minimum")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[! " # $ % & ' ( ) * +]).{6,}$/,
-        "Le mot de passe n'est pas valide"
-      ),
-    confirmPassword: Yup.string()
-      .required("Confirmez votre mot de passe")
-      .oneOf(
-        [Yup.ref("newPassword")],
-        "Les mots de passe ne correspondent pas"
-      ),
-    firstName: Yup.string()
-      .required("Quel est votre prénom ?")
-      .min(2, "Votre prénom doit avoir entre 2 et 20 caractères")
-      .max(20, "Votre prénom doit avoir entre 2 et 20 caractères")
-      .matches(/^[a-zA-ZÀ-ÿ '-]{2,20}$/, "Votre prénom n'est pas valide"),
-    lastName: Yup.string()
-      .required("Quel est votre nom ?")
-      .min(2, "Votre nom doit avoir entre 2 et 20 caractères")
-      .max(20, "Votre nom doit avoir entre 2 et 20 caractères")
-      .matches(/^[a-zA-ZÀ-ÿ '-]{2,20}$/, "Votre nom n'est pas valide"),
-    phone: Yup.string()
-      .required("numéro de téléphone requis")
-      .matches(
-        /^(?:\+33|0)\d{9}$/,
-        "Votre numéro de téléphone n'est pas valide"
-      ),
-    address: Yup.string().required("Entrez votre adresse de livraison"),
-    zipCode: Yup.string()
-      .required("Code postal requis")
-      .matches(/^(?!(0[1-9]|95))[0-9]{5}$/, "Code postal non valide"),
-    city: Yup.string().required("Entrez votre ville"),
+      .email("Enter a valid email address."),
+    password: Yup.string()
+      .required(
+        "Enter a combination of at least six numbers,letters and punctuation marks(such as ! and &)."
+      )
+      .min(6, "Password must be atleast 6 characters.")
+      .max(36, "Password can't be more than 36 characters"),
+    conf_password: Yup.string()
+      .required("Confirm your password.")
+      .oneOf([Yup.ref("password")], "Passwords must match."),
   });
-
+  const signUpHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/signup", {
+        name,
+        email,
+        password,
+      });
+      setUser({ ...user, error: "", success: data.message });
+      setLoading(false);
+      setTimeout(async () => {
+        let options = {
+          redirect: false,
+          email: email,
+          password: password,
+        };
+        const res = await signIn("credentials", options);
+        Router.push("/");
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      setUser({ ...user, success: "", error: error.response.data.message });
+    }
+  };
+  const signInHandler = async () => {
+    setLoading(true);
+    let options = {
+      redirect: false,
+      email: login_email,
+      password: login_password,
+    };
+    const res = await signIn("credentials", options);
+    setUser({ ...user, success: "", error: "" });
+    setLoading(false);
+    if (res?.error) {
+      setLoading(false);
+      setUser({ ...user, login_error: res?.error });
+    } else {
+      return Router.push(callbackUrl || "/");
+    }
+  };
+  const country = {
+    name: "Morocco",
+    flag: "https://cdn-icons-png.flaticon.com/512/197/197551.png?w=360",
+  };
   return (
-    <div>
-      <Header />
-      <div className={`${styles.login}`}>
-        <div className={`${styles.login__container}`}>
-          <div className={`${styles.login__header}`}>
+    <>
+      
+      <Header country={country} />
+      <div className={styles.login}>
+        <div className={`${styles.login__container}`} >
+          <div className={styles.login__header}>
             <div className={styles.back__svg}>
               <BiLeftArrowAlt />
             </div>
@@ -98,74 +133,49 @@ export default function signin({ providers }) {
               We'd be happy to join us ! <Link href="/">Go Store</Link>
             </span>
           </div>
-          <div className={`${styles.login__form}`}>
-            <h1>J&#39;ai déjà un compte</h1>
-            <p className=" text-[#9b9796]">
-              Si vous êtes un utilisateur enregistré, veuillez saisir votre
+          <div className={styles.login__form}>
+            <h1>J'ai déjà un compte</h1>
+            <p>
+            Bon retour ! Veuillez saisir votre
               adresse e-mail et votre mot de passe.
             </p>
-
             <Formik
-              initialValues={{ email: "", password: "" }}
-              validationSchema={loginValidation}
-              validate={(values) => {
-                setUser(values);
-                // console.log("Email:", values.email);
-                // console.log("Password:", values.password);
-                const errors = {};
-                if (!values.email) {
-                  errors.email = "Required";
-                } else if (
-                  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                  errors.email = "Invalid email address";
-                }
-                return errors;
+              enableReinitialize
+              initialValues={{
+                login_email,
+                login_password,
               }}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 400);
+              validationSchema={loginValidation}
+              onSubmit={() => {
+                signInHandler();
               }}
             >
-              {({ isSubmitting }) => (
-                <Form className="flex flex-col gap-4">
-                  <Field
-                    name="email"
-                    type="email"
-                    placeholder="Adresse e-mail"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
+              {(form) => (
+                <Form method="post" action="/api/auth/signin/email">
+                  <input
+                    type="hidden"
+                    name="csrfToken"
+                    defaultValue={csrfToken}
                   />
-                  <ErrorMessage
-                    name="email"
-                    component="span"
-                    className={`${styles.login__required}`}
+                  <LoginInput
+                    type="text"
+                    name="login_email"
+                    placeholder="Adresse email *"
+                    onChange={handleChange}
                   />
-
-                  <Field
-                    name="password"
+                  <LoginInput
                     type="password"
-                    placeholder="Mot de passe"
-                    className={`${styles.login__inputtwo} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-baseline font-normal text-lg line-h leading-4`}
+                    name="login_password"
+                    placeholder="Mot de passe *"
+                    onChange={handleChange}
                   />
-                  <div className="flex justify-between">
-                    <div className={`${styles.forgot}`}>
-                      <Link href="/forget">Mot de passe oublié ?</Link>
-                    </div>
-                    <ErrorMessage
-                      name="password"
-                      component="span"
-                      className={`${styles.login__required}`}
-                    />
+                  <CircledIconBtn type="submit" text="ME CONNECTER" />
+                  {login_error && (
+                    <span className={styles.error}>{login_error}</span>
+                  )}
+                  <div className={styles.forgot}>
+                    <Link href="/auth/forgot">Mot de passe oublié ?</Link>
                   </div>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`${styles.login__buttonco}`}
-                  >
-                    ME CONNECTER
-                  </button>
                 </Form>
               )}
             </Formik>
@@ -200,147 +210,70 @@ export default function signin({ providers }) {
             </div>
           </div>
         </div>
-        <div className={`${styles.login__container}`}>
-          <div className={`${styles.login__form}`}>
-            <h1>Je créé mon compte</h1>
-            <p className=" text-[#9b9796] text-sm">
-              Créer un compte pour faciliter le click and collect sur le site de
+        <div className={styles.login__container}>
+          <div className={styles.login__form}>
+            <h1>Je créer mon compte</h1>
+            <p>
+            Créer un compte pour faciliter le click and collect sur le site de
               Colombo Food City
             </p>
-
             <Formik
+              enableReinitialize
               initialValues={{
-                newEmail: "",
-                newPassword: "",
-                confirmPassword: "",
-                firstname: "",
-                lastname: "",
-                phone: "",
-                address: "",
-                zipCode: "",
-                city: "",
+                name,
+                email,
+                password,
+                conf_password,
               }}
-              validationSchema={createValidation}
-              validate={(values) => {
-                console.log("Email:", values.email);
-                console.log("Password:", values.password);
-                const errors = {};
-                if (!values.email) {
-                  errors.email = "Required";
-                } else if (
-                  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                  errors.email = "Invalid email address";
-                }
-                return errors;
-              }}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 400);
+              validationSchema={registerValidation}
+              onSubmit={() => {
+                signUpHandler();
               }}
             >
-              {({ isSubmitting }) => (
-                <Form className="flex flex-col gap-4">
-                  <Field
-                    name="lastname"
+              {(form) => (
+                <Form>
+                  <LoginInput
                     type="text"
-                    placeholder="Nom"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
+                    name="name"
+                    placeholder="Nom et prénom *"
+                    onChange={handleChange}
                   />
-                  <ErrorMessage
-                    name="lastname"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="firstname"
+                  <LoginInput
                     type="text"
-                    placeholder="Prénom"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
+                    name="email"
+                    placeholder="Adresse email *"
+                    onChange={handleChange}
                   />
-                  <ErrorMessage
-                    name="firstname"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="phone"
-                    type="phone"
-                    placeholder="Numéro de téléphone"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
-                  />
-                  <ErrorMessage
-                    name="phone"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="newEmail"
-                    type="email"
-                    placeholder="Adresse e-mail"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
-                  />
-                  <ErrorMessage
-                    name="newEmail"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="newPassword"
+                  <LoginInput
                     type="password"
-                    placeholder="Mot de passe"
-                    className={`${styles.login__inputtwo} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-baseline font-normal text-lg line-h leading-4`}
+                    name="password"
+                    placeholder="Mot de passe *"
+                    onChange={handleChange}
                   />
-
-                  <ErrorMessage
-                    name="newPassword"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="confirmPassword"
+                  <LoginInput
                     type="password"
-                    placeholder="Confirmation mot de passe"
-                    className={`${styles.login__inputtwo} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-baseline font-normal text-lg line-h leading-4`}
+                    name="conf_password"
+                    placeholder="Confirmer mot de passe *"
+                    onChange={handleChange}
                   />
-
-                  <ErrorMessage
-                    name="confirmPassword"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`${styles.login__buttonco}`}
-                  >
-                    CRÉER MON COMPTE
-                  </button>
+                  <CircledIconBtn type="submit" text="CRÉER MON COMPTE" />
                 </Form>
               )}
             </Formik>
+            <div>
+              {success && <span className={styles.success}>{success}</span>}
+            </div>
+            <div>{error && <span className={styles.error}>{error}</span>}</div>
           </div>
         </div>
       </div>
-
-      <Footer />
-    </div>
+      <Footer country="Morocco" />
+    </>
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const providers=Object.values(await getProviders());
-//   return {
-//     props: { providers },
-//   }
-// }
+
+
 
 export function getServerSideProps(context) {
   return getProviders()

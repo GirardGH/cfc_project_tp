@@ -19,6 +19,7 @@
       }
     }
   }
+
   &__header {
     display: flex;
     align-items: center;
@@ -33,9 +34,9 @@
       place-items: center;
       cursor: pointer;
       &:hover {
-        border-color: aqua;
+        border-color: #770c14;
         svg {
-          fill: aqua;
+          fill: #770c14;
         }
       }
       svg {
@@ -49,9 +50,9 @@
       font-size: 14px;
       // padding-left: 10px;
       a {
-        color: aqua;
+        color: black;
         cursor: pointer;
-        border-bottom: 1px solid aqua;
+        border-bottom: 1px solid #770c14;
         padding-bottom: 5px;
       }
     }
@@ -110,9 +111,10 @@
   &__form {
     margin-top: 1rem;
     h1 {
-      font-size: 50px;
+      font-size: 45px;
       font-weight: 600;
-      margin: 0;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
     }
     p {
       color: #9b9696;
@@ -133,4 +135,6 @@
       }
     }
   }
+
+
 }
