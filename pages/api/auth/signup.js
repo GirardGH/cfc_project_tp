@@ -1,15 +1,18 @@
 import bcrypt from "bcrypt";
 import { createRouter } from "next-connect";
 import { validateEmail } from "../../../utils/validation";
+import { createActivationToken } from "../../../utils/tokens";
+import { sendEmail } from "../../../utils/sendEmails";
 import User from "../../../models/user";
-import db from "../../../utils/db"
+import db from "../../../utils/db";
+import { activateEmailTemplate } from "../../../emails/activateEmailTemplate";
 const router = createRouter();
 
 router.post(async (req, res) => {
   try {
     await db.connectDb();
     const { firstname, lastname, phone, email, password } = req.body;
-    console.log(firstname, lastname, phone, email, password );
+    console.log(firstname, lastname, phone, email, password);
     if (!firstname || !lastname || !phone || !email || !password) {
       return res.status(400).json({ message: "Please fill in all fields." });
     }
@@ -26,19 +29,30 @@ router.post(async (req, res) => {
         .json({ message: "Password must be atleast 6 characters." });
     }
     const cryptedPassword = await bcrypt.hash(password, 12);
-    const newUser = new User({ firstname, lastname, phone, email, password: cryptedPassword });
+    const newUser = new User({
+      firstname,
+      lastname,
+      phone,
+      email,
+      password: cryptedPassword,
+    });
     const addedUser = await newUser.save();
-    res.send(addedUser)
-
-   } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-
-  });
-
+    const activationToken = createActivationToken({
+      id: addedUser._id.toString(),
+    });
+    const url = `${process.env.BASE_URL}/activate/${activationToken}`;
+    sendEmail(email, url, "", "Activate your account");
+    await db.disconnectDb();
+    res.json({
+      message: "Register success ! Please activate your email to start !",
+    });
+    res.send(url);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export default router.handler();
-
 
 // router.post((req, res) => {
 //   Promise.resolve()
@@ -90,66 +104,66 @@ export default router.handler();
 //           .json({ message: "Password must be more than 6 caracters" });
 //       }
 //----------------ARGON 2----------------------
-      // const hashingOptions = {
-      //   type: argon2.argon2id,
-      //   memoryCost: 2 ** 16,
-      //   timeCost: 5,
-      //   parallelism: 1,
-      // };
+// const hashingOptions = {
+//   type: argon2.argon2id,
+//   memoryCost: 2 ** 16,
+//   timeCost: 5,
+//   parallelism: 1,
+// };
 
-      // const hashPassword = (req, res, next) => {
-      //   argon2
-      //     .hash(req.body.password, hashingOptions)
-      //     .then(hashedPassword => {
-      //       req.body.hashedPassword = hashedPassword;
-      //       delete req.body.password;
-      //       next();
-      //     })
-      //     .catch(error => {
-      //       console.error(error);
-      //       res.sendStatus(500);
-      //     });
-      // };
+// const hashPassword = (req, res, next) => {
+//   argon2
+//     .hash(req.body.password, hashingOptions)
+//     .then(hashedPassword => {
+//       req.body.hashedPassword = hashedPassword;
+//       delete req.body.password;
+//       next();
+//     })
+//     .catch(error => {
+//       console.error(error);
+//       res.sendStatus(500);
+//     });
+// };
 
-      // const createUser = (req, res) => {
-      //   const newUser = new User(req.body);
-      //   newUser
-      //     .save()
-      //     .then(() => {
-      //       res.sendStatus(201); // Créé avec succès
-      //     })
-      //     .catch(error => {
-      //       console.error(error);
-      //       res.sendStatus(500);
-      //     });
-      // };
+// const createUser = (req, res) => {
+//   const newUser = new User(req.body);
+//   newUser
+//     .save()
+//     .then(() => {
+//       res.sendStatus(201); // Créé avec succès
+//     })
+//     .catch(error => {
+//       console.error(error);
+//       res.sendStatus(500);
+//     });
+// };
 
 //------------------BCRYPT PROMISE------------------------
-    //   bcrypt
-    //     .hash(password, 12)
-    //     .then((cryptedPassword) => {
-    //       const newUser = new User({
-    //         firstname,
-    //         lastname,
-    //         password: cryptedPassword,
-    //       });
-    //       return newUser.save();
-    //     })
-    //     .then((addedUser) => {
-    //       res.send(addedUser);
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       res
-    //         .status(500)
-    //         .send(
-    //           "Une erreur s'est produite lors de la création de l'utilisateur."
-    //         );
-    //     });
-    // })
-    // .catch((error) => {
-    //   res.status(500).json({ message: error.message });
-    // });
+//   bcrypt
+//     .hash(password, 12)
+//     .then((cryptedPassword) => {
+//       const newUser = new User({
+//         firstname,
+//         lastname,
+//         password: cryptedPassword,
+//       });
+//       return newUser.save();
+//     })
+//     .then((addedUser) => {
+//       res.send(addedUser);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//       res
+//         .status(500)
+//         .send(
+//           "Une erreur s'est produite lors de la création de l'utilisateur."
+//         );
+//     });
+// })
+// .catch((error) => {
+//   res.status(500).json({ message: error.message });
+// });
 // });
 
 // export default router.handler();
