@@ -3,17 +3,9 @@ const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
-    firstname: {
+    name: {
       type: String,
       required: "Please enter your full name.",
-    },
-    lastname: {
-      type: String,
-      required: "Please enter your name.",
-    },
-    phone: {
-      type: String,
-      required: "Please enter your phone.",
     },
     email: {
       type: String,
@@ -77,17 +69,17 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    // wishlist: [
-    //   {
-    //     product: {
-    //       type: ObjectId,
-    //       ref: "Product",
-    //     },
-    //     style: {
-    //       type: String,
-    //     },
-    //   },
-    // ],
+    wishlist: [
+      {
+        product: {
+          type: ObjectId,
+          ref: "Product",
+        },
+        style: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

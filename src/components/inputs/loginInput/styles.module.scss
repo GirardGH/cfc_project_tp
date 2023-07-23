@@ -1,0 +1,42 @@
+.input {
+  position: relative;
+  width: 100%;
+  background-color: none;
+  margin: 10px 0;
+  height: 55px;
+  display: grid;
+//   grid-template-columns: 15% 85%;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-bottom: 1px solid #a3a3a3 ;
+  padding: 10px 0;
+  font-size: 16px;
+  background-color: transparent;
+  transition: border-color 0.3s ease;
+  outline: none;
+
+  input {
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #333;
+    &::placeholder {
+      color: #a3a3a3;
+      font-weight: 400;
+    }
+  }
+}
+
+
+.error__container {
+    position: absolute;
+    font-size: xx-small;
+    right: 0;
+    top: 3.5rem;
+    color: #ff4d4f; /* Couleur du texte d'erreur */
+  }
