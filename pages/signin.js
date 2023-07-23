@@ -8,15 +8,33 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getProviders, signIn } from "next-auth/react";
 
-// const initalValues = {
-//   login_email: "",
-//   login_password: "",
-// };
+const initalValues = {
+  email: "",
+  password: "",
+  newEmail: "",
+  newPassword: "",
+  confirmPassword: "",
+  firstname: "",
+  lastname: "",
+  phone: "",
+  address: "",
+  zipCode: "",
+  city: "",
+};
 
 export default function signin({ providers }) {
   console.log(providers);
-  // const [user, setUser] = useState(initalValues);
-  // const { login_email, login_password } = user;
+  const [user, setUser] = useState(initalValues);
+  const { email, password, newEmail, newPassword, confirmPassword, firstname, lastname, phone, address, zipCode, city } = user;
+
+
+  const handleSetChange = (e) => {
+    const { name, value } = e.target;
+    setUser({...user, [name]: value});
+  };
+
+  console.log(user)
+
   const loginValidation = Yup.object({
     email: Yup.string()
       .required("Email adress is required")
@@ -61,7 +79,7 @@ export default function signin({ providers }) {
         "Votre numéro de téléphone n'est pas valide"
       ),
     address: Yup.string().required("Entrez votre adresse de livraison"),
-    postalCode: Yup.string()
+    zipCode: Yup.string()
       .required("Code postal requis")
       .matches(/^(?!(0[1-9]|95))[0-9]{5}$/, "Code postal non valide"),
     city: Yup.string().required("Entrez votre ville"),
@@ -91,8 +109,9 @@ export default function signin({ providers }) {
               initialValues={{ email: "", password: "" }}
               validationSchema={loginValidation}
               validate={(values) => {
-                console.log("Email:", values.email);
-                console.log("Password:", values.password);
+                setUser(values);
+                // console.log("Email:", values.email);
+                // console.log("Password:", values.password);
                 const errors = {};
                 if (!values.email) {
                   errors.email = "Required";
@@ -194,11 +213,11 @@ export default function signin({ providers }) {
                 newEmail: "",
                 newPassword: "",
                 confirmPassword: "",
-                firstName: "",
-                lastName: "",
+                firstname: "",
+                lastname: "",
                 phone: "",
                 address: "",
-                postalCode: "",
+                zipCode: "",
                 city: "",
               }}
               validationSchema={createValidation}
@@ -225,61 +244,25 @@ export default function signin({ providers }) {
               {({ isSubmitting }) => (
                 <Form className="flex flex-col gap-4">
                   <Field
-                    name="lastName"
+                    name="lastname"
                     type="text"
                     placeholder="Nom"
                     className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
                   />
                   <ErrorMessage
-                    name="lastName"
+                    name="lastname"
                     component="span"
                     className={`${styles.login__required}`}
                   />
 
                   <Field
-                    name="firstName"
+                    name="firstname"
                     type="text"
                     placeholder="Prénom"
                     className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
                   />
                   <ErrorMessage
-                    name="firstName"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="address"
-                    type="text"
-                    placeholder="Adresse"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
-                  />
-                  <ErrorMessage
-                    name="address"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="postalCode"
-                    type="text"
-                    placeholder="Code postal et ville"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
-                  />
-                  <ErrorMessage
-                    name="postalCode"
-                    component="span"
-                    className={`${styles.login__required}`}
-                  />
-
-                  <Field
-                    name="city"
-                    type="text"
-                    placeholder="Ville"
-                    className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
-                  />
-                  <ErrorMessage
-                    name="city"
+                    name="firstname"
                     component="span"
                     className={`${styles.login__required}`}
                   />
@@ -287,7 +270,7 @@ export default function signin({ providers }) {
                   <Field
                     name="phone"
                     type="phone"
-                    placeholder="Entrez votre numéro de téléphone"
+                    placeholder="Numéro de téléphone"
                     className={`${styles.login__inputone} border-b-2 border-gray-300 bg-none focus:outline-none w-full grid grid-cols-[15%,85%] items-center font-normal text-lg line-h leading-4`}
                   />
                   <ErrorMessage
