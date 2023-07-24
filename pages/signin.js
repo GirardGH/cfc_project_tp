@@ -13,10 +13,11 @@ import {
   getProviders,
   getSession,
   signIn,
-  country,
 } from "next-auth/react";
 import axios from "axios";
+import DotLoaderSpinner from "../src/components/loaders/dotLoader";
 import Router from "next/router";
+
 const initialvalues = {
   login_email: "",
   login_password: "",
@@ -121,23 +122,23 @@ export default function signin({ providers, callbackUrl, csrfToken }) {
   };
   return (
     <>
-      
+      {loading && <DotLoaderSpinner loading={loading} />}
       <Header country={country} />
       <div className={styles.login}>
-        <div className={`${styles.login__container}`} >
+        <div className={`${styles.login__container}`}>
           <div className={styles.login__header}>
             <div className={styles.back__svg}>
               <BiLeftArrowAlt />
             </div>
             <span>
-              We'd be happy to join us ! <Link href="/">Go Store</Link>
+              We&#39;d be happy to join us ! <Link href="/">Go Store</Link>
             </span>
           </div>
           <div className={styles.login__form}>
-            <h1>J'ai déjà un compte</h1>
+            <h1>J&#39;ai déjà un compte</h1>
             <p>
-            Bon retour ! Veuillez saisir votre
-              adresse e-mail et votre mot de passe.
+              Bon retour ! Veuillez saisir votre adresse e-mail et votre mot de
+              passe.
             </p>
             <Formik
               enableReinitialize
@@ -190,7 +191,11 @@ export default function signin({ providers, callbackUrl, csrfToken }) {
               </div>
             </div>
             <div className="flex flex-col items-center">
-              {providers.map((elt) => (
+              {providers.map((elt) => {
+                if (elt.name == "Credentials") {
+                    return;
+                  }
+             return (
                 <div key={elt.name} className="mt-4">
                   <button
                     className={`${styles.login__buttonsocial}`}
@@ -206,7 +211,7 @@ export default function signin({ providers, callbackUrl, csrfToken }) {
                     </span>
                   </button>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         </div>
@@ -214,7 +219,7 @@ export default function signin({ providers, callbackUrl, csrfToken }) {
           <div className={styles.login__form}>
             <h1>Je créer mon compte</h1>
             <p>
-            Créer un compte pour faciliter le click and collect sur le site de
+              Créer un compte pour faciliter le click and collect sur le site de
               Colombo Food City
             </p>
             <Formik
@@ -272,21 +277,43 @@ export default function signin({ providers, callbackUrl, csrfToken }) {
   );
 }
 
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  const session = await getSession({ req });
+  const { callbackUrl } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+      },
+    };
+  }
+
+  const csrfToken = await getCsrfToken(context);
+  const providers = Object.values(await getProviders());
+  return {
+    props: {
+      providers,
+      csrfToken,
+      callbackUrl,
+    },
+  };
 
 
-
-export function getServerSideProps(context) {
-  return getProviders()
-    .then((providers) => {
-      const providersArray = Object.values(providers);
-      return {
-        props: { providers: providersArray },
-      };
-    })
-    .catch((error) => {
-      console.error(error);
-      return {
-        props: { providers: [] },
-      };
-    });
 }
+
+  // return getProviders()
+  //   .then((providers) => {
+  //     const providersArray = Object.values(providers);
+  //     return {
+  //       props: { providers: providersArray },
+  //     };
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //     return {
+  //       props: { providers: [] },
+  //     };
+  //   });
