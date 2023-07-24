@@ -3,7 +3,7 @@ import { createRouter } from "next-connect";
 import { validateEmail } from "../../../utils/validation";
 import { createActivationToken } from "../../../utils/tokens";
 import { sendEmail } from "../../../utils/sendEmails";
-import User from "../../../models/user";
+import User from "../../../models/User";
 import db from "../../../utils/db";
 import { activateEmailTemplate } from "../../../emails/activateEmailTemplate";
 const router = createRouter();

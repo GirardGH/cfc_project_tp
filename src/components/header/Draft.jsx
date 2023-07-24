@@ -24,10 +24,13 @@ import {
   AiOutlineMenu,
 } from "react-icons/ai";
 import { PiUser } from "react-icons/pi";
-import { HiOutlineShoppingBag } from "react-icons/hi";
+import { CiShoppingBasket } from "react-icons/ci";
 import { PiMagnifyingGlass } from "react-icons/pi";
+import { IoIosLogIn } from "react-icons/io"
 import UserMenu from "./UserMenu";
 import { useSession } from "next-auth/react";
+import { signOut, signIn } from "next-auth/react";
+import Link from "next/link";
 
 const navigation = {
   categories: [
@@ -369,7 +372,7 @@ export default function Draft({ handleSearchItem }) {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
+                <Link href="/">
                   <span className="sr-only">Workflow</span>
                   <Image
                     width={500}
@@ -378,7 +381,7 @@ export default function Draft({ handleSearchItem }) {
                     src="https://res.cloudinary.com/db2sa2bxv/image/upload/v1676456828/logoCFC_yswlhx.svg"
                     alt=""
                   />
-                </a>
+                </Link>
               </div>
 
               {/* Flyout menus */}
@@ -526,6 +529,17 @@ export default function Draft({ handleSearchItem }) {
 
                 {/* User */}
 
+                <div
+                    className="flex mr-6 lg:hidden"
+                  >
+
+                      <IoIosLogIn
+                        className="w-8 h-8 block cursor-pointer"
+                        onClick={() => signIn()}
+                      />
+                    
+                  </div>
+
                 {session ? (
                   <div
                     className="lg:ml-8 lg:flex lg:relative"
@@ -557,7 +571,10 @@ export default function Draft({ handleSearchItem }) {
                       href="#"
                       className="text-black hover:text-[#770c14] flex items-center"
                     >
-                      <PiUser className="w-8 h-8 block" />
+                      <PiUser
+                        className="w-8 h-8 block"
+                        
+                      />
                     </a>
                   </div>
                 )}
@@ -580,7 +597,7 @@ export default function Draft({ handleSearchItem }) {
                 {/* Cart */}
                 <div className="flow-root lg:ml-6">
                   <a href="#" className="group -m-2 p-2 flex items-center">
-                    <HiOutlineShoppingBag
+                    <CiShoppingBasket
                       className="flex-shrink-0 h-8 w-8 text-black group-hover:text-[#770c14]"
                       aria-hidden="true"
                     />
