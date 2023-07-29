@@ -6,6 +6,7 @@ import { sendEmail } from "../../../utils/sendEmails";
 import User from "../../../models/User";
 import db from "../../../utils/db";
 import { activateEmailTemplate } from "../../../emails/activateEmailTemplate";
+
 const router = createRouter();
 
 router.post(async (req, res) => {

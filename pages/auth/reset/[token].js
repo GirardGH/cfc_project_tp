@@ -1,18 +1,19 @@
 import styles from "../../../styles/forgot.module.scss";
-import Header from "../../../components/header";
-import Footer from "../../../components/footer";
+import Header from "../../../src/components/header";
+import Footer from "../../../src/components/footer";
 import { BiLeftArrowAlt } from "react-icons/bi";
-import CircledIconBtn from "../../../components/buttons/circledIconBtn";
-import LoginInput from "../../../components/inputs/loginInput";
+import CircledIconBtn from "../../../src/components/buttons/circledIconBtn";
+import LoginInput from "../../../src/components/inputs/loginInput";
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import DotLoaderSpinner from "../../../components/loaders/dotLoader";
+import DotLoaderSpinner from "../../../src/components/loaders/dotLoader";
 import axios from "axios";
 import { getSession, signIn } from "next-auth/react";
 import jwt from "jsonwebtoken";
 import { Router } from "next/router";
+
 export default function reset({ user_id }) {
   console.log("user_id", user_id);
   const [password, setPassword] = useState("");
@@ -100,7 +101,7 @@ export default function reset({ user_id }) {
           </Formik>
         </div>
       </div>
-      <Footer country="" />
+      <Footer />
     </>
   );
 }
@@ -116,11 +117,10 @@ export async function getServerSideProps(context) {
     };
   }
   const token = query.token;
-  const user_id = jwt.verify("pojadphjapidja", process.env.RESET_TOKEN_SECRET);
-  if (user_id == null) {
-    console.log("adoajdàihjadiohiodhjioadha");
-  }
-  console.log(user_id);
+  const user_id = jwt.verify(token, process.env.RESET_TOKEN_SECRET);
+  // if (user_id == null) {
+  // }
+  // console.log(user_id);
   return {
     props: {
       user_id: user_id.id,
